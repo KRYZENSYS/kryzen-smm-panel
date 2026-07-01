@@ -1,0 +1,12 @@
+{
+  "name": "KRYZEN SMM Panel",
+  "description": "PHP SMM panel with SQLite",
+  "keywords": ["php", "smm", "panel", "kryzen"],
+  "scripts": {
+    "start": "php -S 0.0.0.0:$PORT -t .",
+    "dev": "php -S localhost:8000"
+  },
+  "engines": {
+    "php": "8.1"
+  }
+}

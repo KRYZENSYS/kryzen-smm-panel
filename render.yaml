@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: kryzen-smm
+    runtime: php
+    plan: free
+    buildCommand: echo "PHP build"
+    startCommand: php -S 0.0.0.0:$PORT -t .
+    envVars:
+      - key: PHP_VERSION
+        value: 8.1
+      - key: DB_TYPE
+        value: sqlite
+    disk:
+      name: kryzen-data
+      mountPath: /var/www/html/data
+      sizeGB: 1
+    healthCheckPath: /install.php
+    autoDeploy: true

@@ -1,0 +1,15 @@
+run = "php -S 0.0.0.0:8080 -t ."
+entrypoint = "index.php"
+
+[nix]
+channel = "stable-23_11"
+
+[deployment]
+run = ["php", "-S", "0.0.0.0:8080", "-t", "."]
+deploymentTarget = "static"
+ignorePorts = false
+ignoreBuildCommand = true
+
+[[ports]]
+localPort = 8080
+externalPort = 80

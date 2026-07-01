@@ -1,24 +1,71 @@
 <?php
-// KRYZEN SMM — Asosiy konfiguratsiya va yordamchi funksiyalar
+// KRYZEN SMM — Replit uchun SQLite asosida
+// MySQL ham ishlaydi, lekin Replit'da SQLite tayyor — DB haqida qayg'urmang
 session_start();
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'kryzen_smm');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_CHARSET', 'utf8mb4');
+define('DB_TYPE', 'sqlite'); // yoki 'mysql'
+define('SQLITE_PATH', __DIR__ . '/kryzen.db');
+
+if (DB_TYPE === 'mysql') {
+    define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+    define('DB_NAME', getenv('DB_NAME') ?: 'kryzen_smm');
+    define('DB_USER', getenv('DB_USER') ?: 'root');
+    define('DB_PASS', getenv('DB_PASS') ?: '');
+    define('DB_CHARSET', 'utf8mb4');
+}
 
 function db(): PDO {
     static $pdo = null;
-    if ($pdo === null) {
+    if ($pdo !== null) return $pdo;
+
+    if (DB_TYPE === 'mysql') {
         $dsn = 'mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset='.DB_CHARSET;
-        try {
-            $pdo = new PDO($dsn, DB_USER, DB_PASS, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false,
-            ]);
-        } catch (PDOException $e) { die('DB error: '.htmlspecialchars($e->getMessage())); }
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ]);
+    } else {
+        $pdo = new PDO('sqlite:' . SQLITE_PATH);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        // Birinchi marta — jadvallarni avtomatik yaratish
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL UNIQUE,
+                email TEXT NOT NULL UNIQUE,
+                password TEXT NOT NULL,
+                balance REAL NOT NULL DEFAULT 0,
+                role TEXT NOT NULL DEFAULT 'user',
+                status TEXT NOT NULL DEFAULT 'active',
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE TABLE IF NOT EXISTS orders (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                service_id INTEGER NOT NULL,
+                service_name TEXT NOT NULL,
+                link TEXT NOT NULL,
+                quantity INTEGER NOT NULL,
+                start_count INTEGER DEFAULT 0,
+                remains INTEGER DEFAULT 0,
+                status TEXT NOT NULL DEFAULT 'Pending',
+                api_order_id TEXT,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            );
+            CREATE TABLE IF NOT EXISTS settings (
+                id INTEGER PRIMARY KEY,
+                api_url TEXT NOT NULL,
+                api_key TEXT NOT NULL
+            );
+        ");
+        // Settings ni to'ldirish
+        $exists = $pdo->query("SELECT id FROM settings WHERE id=1")->fetchColumn();
+        if (!$exists) {
+            $pdo->exec("INSERT INTO settings (id, api_url, api_key) VALUES (1, 'https://bepulsmm.x404.uz/bot.php', '8631e7de09a0cff79c1b4b89a1589c1e')");
+        }
     }
     return $pdo;
 }
@@ -26,11 +73,10 @@ function db(): PDO {
 function get_settings(): array {
     static $cache = null;
     if ($cache !== null) return $cache;
-    $stmt = db()->query('SELECT * FROM settings WHERE id=1');
-    $row = $stmt ? $stmt->fetch() : null;
+    $row = db()->query('SELECT * FROM settings WHERE id=1')->fetch();
     if (!$row) {
         db()->exec("INSERT INTO settings (id, api_url, api_key) VALUES (1, 'https://bepulsmm.x404.uz/bot.php', '8631e7de09a0cff79c1b4b89a1589c1e')");
-        $row = ['id'=>1,'api_url'=>'https://bepulsmm.x404.uz/bot.php','api_key'=>'8631e7de09a0cff79c1b4b89a1589c1e'];
+        $row = db()->query('SELECT * FROM settings WHERE id=1')->fetch();
     }
     $cache = $row; return $cache;
 }

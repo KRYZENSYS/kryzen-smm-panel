@@ -1,0 +1,10 @@
+[
+  {"service": 12, "name": "👁 Video Ko‘rishlar | 🎉 Tekin", "category": "⚫️ TikTok 👁 Ko'rishlar", "rate": 0, "min": 100, "max": 300, "type": "Default", "refill": true, "cancel": true, "dripfeed": true, "desc": ""},
+  {"service": 26, "name": "👁️ Post Ko'rishlar", "category": "🔵 Telegram 👁 Ko'rishlar", "rate": 0, "min": 10, "max": 200, "type": "Default", "refill": true, "cancel": true, "dripfeed": true, "desc": ""},
+  {"service": 36, "name": "🎁 Telegram Obunachi", "category": "🔵 Telegram 👥 Obunachilar", "rate": 0, "min": 10, "max": 10, "type": "Default", "refill": true, "cancel": true, "dripfeed": true, "desc": ""},
+  {"service": 37, "name": "🎁 Telegram Post Reaksiya", "category": "🔵 Telegram ⚡️ Reaksiyalar", "rate": 0, "min": 10, "max": 10, "type": "Default", "refill": true, "cancel": true, "dripfeed": true, "desc": ""},
+  {"service": 39, "name": "🎁 Instagram Reels Koʻrishlar", "category": "🟣 Instagram 👁 Ko'rishlar", "rate": 0, "min": 100, "max": 100, "type": "Default", "refill": true, "cancel": true, "dripfeed": true, "desc": ""},
+  {"service": 40, "name": "🎁 Instagram Reels Like", "category": "🟣 Instagram ❤️ Yoqtirishlar", "rate": 0, "min": 10, "max": 10, "type": "Default", "refill": true, "cancel": true, "dripfeed": true, "desc": ""},
+  {"service": 41, "name": "🎁 TikTok Reels Prasmotr", "category": "⚫️ TikTok 👁 Ko'rishlar", "rate": 0, "min": 100, "max": 100, "type": "Default", "refill": true, "cancel": true, "dripfeed": true, "desc": ""},
+  {"service": 42, "name": "UZB 🇺🇿 Obunachi Tekin ( 50ta🎁 )", "category": "🔵 Telegram 👥 Obunachilar", "rate": 0, "min": 50, "max": 50, "type": "Default", "refill": true, "cancel": true, "dripfeed": true, "desc": ""}
+]

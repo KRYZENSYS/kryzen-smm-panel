@@ -4,6 +4,12 @@
 .phpunit.result.cache
 vendor/
 
+# Database (Replit SQLite)
+*.db
+*.sqlite
+*.sqlite3
+kryzen.db
+
 # IDE
 .vscode/
 .idea/
@@ -12,5 +18,5 @@ vendor/
 .DS_Store
 Thumbs.db
 
-# Config (xohlasangiz)
-# config.local.php
+# Replit
+.replit.user

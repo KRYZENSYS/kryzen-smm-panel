@@ -1,5 +1,5 @@
 <?php
-// KRYZEN SMM — Dashboard (asosiy sahifa)
+// KRYZEN SMM — Dashboard (Replit uchun SQLite mos)
 require_once __DIR__ . '/config.php';
 require_login();
 $u = $GLOBALS['current_user'];
@@ -85,7 +85,7 @@ foreach ($services as $s) {
                         <td><?= (int)$o['quantity'] ?></td>
                         <td><?= (int)$o['remains'] ?></td>
                         <td><span class="badge badge-<?= strtolower($o['status']) ?>"><?= e($o['status']) ?></span></td>
-                        <td class="text-gray-400 text-xs"><?= date('d.m H:i', strtotime($o['created_at'])) ?></td>
+                        <td class="text-gray-400 text-xs"><?= htmlspecialchars($o['created_at']) ?></td>
                         <td class="flex gap-1">
                             <?php
                             $svc = null;

@@ -1,5 +1,5 @@
 <?php
-// KRYZEN SMM — API Handler (CORS proxy + 7 ta API amali)
+// KRYZEN SMM — API Handler (SQLite + MySQL bilan ishlaydi)
 require_once __DIR__ . '/config.php';
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');

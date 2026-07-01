@@ -1,0 +1,45 @@
+# KRYZEN SMM — Apache konfiguratsiya
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # HTTPSga majburlash
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Xavfsizlik
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Sensitive fayllarni yashirish
+<FilesMatch "\.(env|sql|json|md)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# services.json faqat PHP orqali (ixtiyoriy)
+<Files "services.json">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "config.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "database.sql">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "install.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Default page
+DirectoryIndex index.php
